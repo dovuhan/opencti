@@ -17,18 +17,14 @@ const scriptInsertDataset = async () => {
   const executeContext = executionContext('insert-dataset');
   const startingHandler = await getStartingHandler();
   try {
-    // Init the httpServer if needed
     await startingHandler.start();
-    // Check python availability
     await checkPythonAvailability(executeContext, ADMIN_USER);
-    // Insert dataset
     await execChildPython(executeContext, ADMIN_USER, PYTHON_PATH, 'local_importer.py', sample1);
     await execChildPython(executeContext, ADMIN_USER, PYTHON_PATH, 'local_importer.py', sample2);
     logApp.info('[OPENCTI] Dataset insertion succeeded');
   } catch (e) {
     logApp.error('[OPENCTI] Dataset insertion failed', { error: e });
   } finally {
-    // Stop the httpServer if needed
     await startingHandler.shutdown();
   }
 };
